@@ -1,0 +1,117 @@
+# Services
+services:
+  # db service
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+
+    container_name: db
+    ports:
+      - "27017:80"
+
+  # Zookeeper service
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - my-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:9092,PLAINTEXT_EXTERNAL://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://kafka:9092,PLAINTEXT_EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - my-network
+  
+  # Order microservice
+  order-microservice:
+    build:
+      context: ./backend/OrderMicroservice
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    container_name: orderM
+    networks:
+      - my-network
+    depends_on:
+      - db
+      - zookeeper
+      - kafka
+
+  # Stock microservice
+  stock-microservice:
+    build:
+      context: ./backend/StockMicroservice
+      dockerfile: Dockerfile
+    ports:
+      - "8091:8091"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: stock
+      KAFKA_AUTO_OFFSET_RESET: earliest
+    container_name: stockM
+    networks:
+      - my-network
+    depends_on:
+      - db
+      - zookeeper
+      - kafka
+    
+  # Email microservice
+  email-microservice:
+    build:
+      context: ./backend/EmailMicroservice
+      dockerfile: Dockerfile
+    ports:
+      - "8092:8092"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: email
+      KAFKA_AUTO_OFFSET_RESET: earliest
+    container_name: emailM
+    networks:
+      - my-network
+    depends_on:
+      - db
+      - zookeeper
+      - kafka
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - order-microservice
+
+# Volumes definition
+volumes: 
+  mydata:
+
+# Networks definition
+networks:
+  my-network:
+    driver: bridge

@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "a68e15f4-752f-41c2-a54e-0de10da60188",
+		"name": "Pizza Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3596594"
+	},
+	"item": [
+		{
+			"name": "GET request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/demo/calculatetest?x=7&y=5&n=12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demo",
+						"calculatetest"
+					],
+					"query": [
+						{
+							"key": "x",
+							"value": "7"
+						},
+						{
+							"key": "y",
+							"value": "5"
+						},
+						{
+							"key": "n",
+							"value": "12345"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"x\": 7,\r\n    \"y\": 5,\r\n    \"n\": 12345\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/demo/calculatetest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demo",
+						"calculatetest"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
