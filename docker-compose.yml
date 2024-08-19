@@ -43,8 +43,8 @@ services:
   # Order microservice
   order-microservice:
     build:
-      context: ./backend/OrderMicroservice
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./OrderMicroservice/Dockerfile
     ports:
       - "8090:8090"
     environment:
@@ -60,8 +60,8 @@ services:
   # Stock microservice
   stock-microservice:
     build:
-      context: ./backend/StockMicroservice
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./StockMicroservice/Dockerfile
     ports:
       - "8091:8091"
     environment:
@@ -79,8 +79,8 @@ services:
   # Email microservice
   email-microservice:
     build:
-      context: ./backend/EmailMicroservice
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./EmailMicroservice/Dockerfile
     ports:
       - "8092:8092"
     environment:

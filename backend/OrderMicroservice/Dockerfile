@@ -1,21 +1,23 @@
 # Stage 1: Build Spring Boot App
 FROM maven:latest as spring-builder
 
+# Set the working directory for the build context
 WORKDIR /app/backend
 
-COPY pom.xml ./
-RUN mvn dependency:go-offline
+# Copy the entire project into the build context
+COPY ../ .
 
-COPY . .
-RUN mvn package -DskipTests
+# Build only the OrderMicroservice module and package it as an executable JAR
+RUN mvn clean package -pl OrderMicroservice -am -DskipTests
 
 # Stage 2: Serve Spring Boot App
-FROM openjdk:latest
+FROM eclipse-temurin:17-jdk-alpine
 
-WORKDIR /app/backend
+# Set the working directory in the final image
+WORKDIR /app
 
 # Copy built Spring Boot JAR from previous stage
-COPY --from=spring-builder /app/backend/target/*.jar /app/orderM.jar
+COPY --from=spring-builder /app/backend/OrderMicroservice/target/*.jar /app/orderM.jar
 
 # Expose the port the app runs on
 EXPOSE 8080
