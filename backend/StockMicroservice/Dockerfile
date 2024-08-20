@@ -8,7 +8,7 @@ WORKDIR /app/backend
 COPY ../ .
 
 # Build only the OrderMicroservice module and package it as an executable JAR
-RUN mvn clean package -pl StockMicroservice -am -DskipTests
+RUN mvn clean package -pl StockMicroservice -am
 
 # Stage 2: Serve Spring Boot App
 FROM eclipse-temurin:17-jdk-alpine
@@ -17,10 +17,10 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy built Spring Boot JAR from previous stage
-COPY --from=spring-builder /app/backend/StockMicroservice/target/*.jar /app/stockM.jar
+COPY --from=spring-builder /app/backend/StockMicroservice/target/stockmicroservice-SHADED.jar /app/stockMicroservice.jar
 
 # Expose the port the app runs on
 EXPOSE 8080
 
 # Command to run the Spring Boot app
-CMD ["java", "-jar", "/app/stockM.jar"]
+CMD ["java", "-jar", "/app/stockMicroservice.jar"]

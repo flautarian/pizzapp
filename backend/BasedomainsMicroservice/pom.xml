@@ -74,11 +74,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version> <!-- Use the appropriate version -->
+                    <version>3.8.1</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
-                        <encoding>UTF-8</encoding> <!-- Set encoding explicitly -->
                     </configuration>
                 </plugin>
             </plugins>
