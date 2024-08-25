@@ -1,9 +1,11 @@
 package com.pizzaapp.base;
 
 import com.pizzapp.base.BasedomainsMicroserviceApplication;
-import com.pizzapp.base.dto.Order;
+import com.pizzapp.base.dto.PizzaDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -12,8 +14,8 @@ class BasedomainsMicroserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Order order = new Order("orderId", "name", 1, 1f);
-		assertNotEquals(null, order);
+		PizzaDto pizzaDto = new PizzaDto("customer", "delivery address", "placed", "email@gmail.com",new ArrayList<>(), 10.50f);
+		assertNotEquals(null, pizzaDto);
 	}
 
 }

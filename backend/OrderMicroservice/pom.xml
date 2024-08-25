@@ -10,7 +10,7 @@
     </parent>
     <artifactId>ordermicroservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>order-microservice</name>
+    <name>pizzaDto-microservice</name>
     <description>Order microservice</description>
     <packaging>jar</packaging>
     <properties>

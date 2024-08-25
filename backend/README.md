@@ -14,14 +14,14 @@ The microservices that composes this project are:
 
 base-domain: Module dedicated to keep all the common classes
 
-order-microservice: is the entry gate of the orders, with:
+pizzaDto-microservice: is the entry gate of the orders, with:
     - The controller that have the /orders endpoint
-    - The kafka event producer to communicate the order to other microservices
+    - The kafka event producer to communicate the pizzaDto to other microservices
 
-email-microsevice: microservice dedicated to receive the order and send mail with that info with:
+email-microsevice: microservice dedicated to receive the pizzaDto and send mail with that info with:
     - The kafka event consumer to receive the orders
 
-stock-microsevice: microservice dedicated to receive the order and reduce the stock data with that info with:
+stock-microsevice: microservice dedicated to receive the pizzaDto and reduce the stock data with that info with:
     - The kafka event consumer to receive the orders
 
 
@@ -38,6 +38,6 @@ Donwload latest kafka version:
         .\bin\windows\kafka-server-start.bat .\config\server.properties
 
 In project:
-    - Run the order, stock and email configurations and test the project with test-postman-collection.json
+    - Run the pizzaDto, stock and email configurations and test the project with test-postman-collection.json
 
 

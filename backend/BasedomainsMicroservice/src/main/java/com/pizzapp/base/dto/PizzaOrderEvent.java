@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderEvent {
+public class PizzaOrderEvent {
     private String message;
     private String status;
-    private Order order;
+    private PizzaDto pizzaDto;
 }

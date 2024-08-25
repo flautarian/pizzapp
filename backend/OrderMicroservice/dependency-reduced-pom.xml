@@ -7,7 +7,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ordermicroservice</artifactId>
-  <name>order-microservice</name>
+  <name>pizzaDto-microservice</name>
   <version>0.0.1-SNAPSHOT</version>
   <description>Order microservice</description>
   <build>

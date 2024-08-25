@@ -5,10 +5,20 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-
     container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: Admin
+      MONGO_INITDB_ROOT_PASSWORD: ThisIsATest
     ports:
-      - "27017:80"
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongo", "--quiet", "127.0.0.1/pizzaapp", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - my-network
 
   # Zookeeper service
   zookeeper:
@@ -16,11 +26,18 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=*"
     ports:
       - "2181:2181"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo ruok | nc -w 2 localhost 2181 | grep imok"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - my-network
 
+  # Kafka service
   kafka:
     image: confluentinc/cp-kafka:7.0.1
     ports:
@@ -35,8 +52,14 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
       KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "bash", "-c", "kafka-broker-api-versions --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     networks:
       - my-network
   
@@ -48,6 +71,7 @@ services:
     ports:
       - "8090:8090"
     environment:
+      SPRING_DATA_MONGODB_URI: mongodb://Admin:ThisIsATest@db:27017/pizzaapp
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     container_name: orderM
     networks:
@@ -106,6 +130,8 @@ services:
       - "4200:80"
     depends_on:
       - order-microservice
+    networks:
+      - my-network
 
 # Volumes definition
 volumes: 
