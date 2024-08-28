@@ -20,6 +20,10 @@
         </div>
         <button type="submit" [disabled]="form.invalid">Submit</button>
       </form>
+      <p>Data displayed</p>
+      <div *ngFor="let item of data">
+        {{ item }}
+      </div>
     </div>
 </main>
 <router-outlet />

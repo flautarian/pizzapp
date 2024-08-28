@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { RequestDto } from '../models/RequestDto';
+import { PizzaDto } from '../models/PizzaDto';
+import { WebSocketService } from '@services/WebSocketService';
 
 @Component({
   selector: 'app-root',
@@ -15,25 +16,31 @@ import { RequestDto } from '../models/RequestDto';
 export class AppComponent implements OnInit{
 
   form!: FormGroup;
-  formData: RequestDto = {
+  
+  formData: PizzaDto = {
     x: -1,
     y: -1,
     n: -1
   };
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
+  data: any[] = [];
 
-  /* 
-    requestType:
-    false -> GET
-    true  -> POST
-  */
+  constructor(
+    private formBuilder: FormBuilder,
+     private http: HttpClient,
+     private webSocketService: WebSocketService) { }
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       x: [null, Validators.required],
       y: [null, Validators.required],
       n: [null, Validators.required],
       requestType: [false, Validators.required]
+    });
+
+    this.webSocketService.getUpdates().subscribe(update => {
+      // Handle the update, e.g., push it to a data array
+      this.data.push(update);
     });
   }
 
@@ -55,7 +62,7 @@ export class AppComponent implements OnInit{
   /* 
     Post request of data
   */
-  postRequestData = (data: RequestDto) => {
+  postRequestData = (data: PizzaDto) => {
     this.http.post<any>('http://localhost:8080/demo/calculatetest', data)
       .subscribe(
         data => {
@@ -71,7 +78,7 @@ export class AppComponent implements OnInit{
   /* 
     Get request of data
   */
-  getRequestData = (data: RequestDto) => {
+  getRequestData = (data: PizzaDto) => {
     const url = `http://localhost:8080/demo/calculatetest?x=${data.x}&y=${data.y}&n=${data.n}`;
     this.http.get<any>(url)
       .subscribe(

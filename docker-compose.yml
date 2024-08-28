@@ -1,22 +1,28 @@
 # Services
 services:
   # db service
-  db:
+  mongodb:
     build:
       context: ./db
       dockerfile: Dockerfile
-    container_name: db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: Admin
-      MONGO_INITDB_ROOT_PASSWORD: ThisIsATest
+    container_name: mongodb
+    hostname: mongodb
+    restart: always
+    healthcheck:
+      test: "mongosh -u monitor -p monitor --eval \"try {
+          rs.status().ok
+        } catch (e) {
+          rs.initiate({ '_id': 'rs0', 'members': [{ '_id': 0, 'host': 'localhost:27017' }] }).ok
+        }\""
+      interval: 10s
+      timeout: 30s
+      start_period: 20s
+      retries: 10
     ports:
       - "27017:27017"
-    healthcheck:
-      test: ["CMD", "mongo", "--quiet", "127.0.0.1/pizzaapp", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+    volumes:
+      - mongodb_data:/data/db
+    command: ["-f", "/etc/mongod.conf"]
     networks:
       - my-network
 
@@ -63,23 +69,6 @@ services:
     networks:
       - my-network
   
-  # Order microservice
-  order-microservice:
-    build:
-      context: ./backend
-      dockerfile: ./OrderMicroservice/Dockerfile
-    ports:
-      - "8090:8090"
-    environment:
-      SPRING_DATA_MONGODB_URI: mongodb://Admin:ThisIsATest@db:27017/pizzaapp
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-    container_name: orderM
-    networks:
-      - my-network
-    depends_on:
-      - db
-      - zookeeper
-      - kafka
 
   # Stock microservice
   stock-microservice:
@@ -96,7 +85,7 @@ services:
     networks:
       - my-network
     depends_on:
-      - db
+      - mongodb
       - zookeeper
       - kafka
     
@@ -115,7 +104,7 @@ services:
     networks:
       - my-network
     depends_on:
-      - db
+      - mongodb
       - zookeeper
       - kafka
 
@@ -128,14 +117,12 @@ services:
     container_name: frontend
     ports:
       - "4200:80"
-    depends_on:
-      - order-microservice
     networks:
       - my-network
 
 # Volumes definition
-volumes: 
-  mydata:
+volumes:
+  mongodb_data:
 
 # Networks definition
 networks:
