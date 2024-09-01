@@ -45,7 +45,7 @@ public class PizzaService {
     public Mono<PizzaDto> createPizza(PizzaDto pizzaDto) {
         pizzaDto.setStatus("PLACED");
         return pizzaOrderRepository.insert(new Pizza(pizzaDto))
-                .map(PizzaDto::new) // Convert to DTO
+                .map(PizzaDto::new)
                 .doOnSuccess(dto -> LOGGER.info("Pizza created successfully: " + dto))
                 .doOnError(error -> LOGGER.error("Failed to create pizza: " + error.getMessage()));
     }

@@ -14,7 +14,7 @@ class BasedomainsMicroserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
-		PizzaDto pizzaDto = new PizzaDto("customer", "delivery address", "placed", "email@gmail.com",new ArrayList<>(), 10.50f);
+		PizzaDto pizzaDto = new PizzaDto("customer", "L", "delivery address", "PLACED", "email@gmail.com", "Margherita",new ArrayList<>(), 10.50f);
 		assertNotEquals(null, pizzaDto);
 	}
 

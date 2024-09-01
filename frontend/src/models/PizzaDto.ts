@@ -1,5 +1,10 @@
 export interface PizzaDto {
-    x: number;
-    y: number;
-    n: number;
-  }
+  customerName: string,
+  pizzaSize: string,
+  deliveryAddress: string,
+  status: string,
+  emailAddress: string,
+  pizzaName: string,
+  extraIngredients: string[],
+  price: number;
+}

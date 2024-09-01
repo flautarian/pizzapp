@@ -1,5 +1,5 @@
 # Use the official MongoDB image from Docker Hub
-FROM mongo:latest
+FROM mongo:7.0.14
 
 # Expose the default MongoDB port
 EXPOSE 27017

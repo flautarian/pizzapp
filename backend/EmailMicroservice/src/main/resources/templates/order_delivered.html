@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #d35400;
+            padding: 10px 20px;
+            border-radius: 10px 10px 0 0;
+            color: #ffffff;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: left;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .content h2 {
+            color: #d35400;
+        }
+        .order-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .order-details p {
+            margin: 5px 0;
+        }
+        .footer {
+            text-align: center;
+            color: #777777;
+            font-size: 14px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dddddd;
+        }
+        .footer a {
+            color: #d35400;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="cid:logoImage" alt="Company Logo" style="max-width: 100px;">
+            <h1>Thank You for Your Order!</h1>
+        </div>
+        <div class="content">
+            <h2>Hello {{clientName}},</h2>
+            <p>We are excited to inform you that your pizza order has left our restaurant! Our chefs are already preparing your delicious pizza, and it will be on its way to you soon at {{deliveryAddress}}.</p>
+            <p>Thank you for choosing [Pizza Company Name]! We hope you enjoy your meal!</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 [Pizza Company Name]. All Rights Reserved.</p>
+            <p><a href="[Unsubscribe Link]">Unsubscribe</a> | <a href="[Contact Us Link]">Contact Us</a></p>
+        </div>
+    </div>
+</body>
+</html>

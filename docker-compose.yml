@@ -1,27 +1,23 @@
 # Services
 services:
   # db service
-  mongodb:
+  db:
     build:
       context: ./db
       dockerfile: Dockerfile
-    container_name: mongodb
-    hostname: mongodb
+    container_name: db
+    hostname: db
     restart: always
     healthcheck:
-      test: "mongosh -u monitor -p monitor --eval \"try {
-          rs.status().ok
-        } catch (e) {
-          rs.initiate({ '_id': 'rs0', 'members': [{ '_id': 0, 'host': 'localhost:27017' }] }).ok
-        }\""
+      test: "mongosh -u superuser -p superuser --authenticationDatabase admin --quiet --eval 'rs.status().ok && rs.isMaster().ismaster'"
       interval: 10s
       timeout: 30s
-      start_period: 20s
+      start_period: 50s
       retries: 10
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - db_data:/data/db
     command: ["-f", "/etc/mongod.conf"]
     networks:
       - my-network
@@ -69,6 +65,26 @@ services:
     networks:
       - my-network
   
+  # Order microservice
+  order-microservice:
+    build:
+      context: ./backend
+      dockerfile: ./OrderMicroservice/Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://pizzaUser:pizzaPassword@db:27017/pizzaapp
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    container_name: orderM
+    networks:
+      - my-network
+    depends_on:
+      db:
+        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
 
   # Stock microservice
   stock-microservice:
@@ -85,9 +101,12 @@ services:
     networks:
       - my-network
     depends_on:
-      - mongodb
-      - zookeeper
-      - kafka
+      db:
+        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     
   # Email microservice
   email-microservice:
@@ -104,9 +123,12 @@ services:
     networks:
       - my-network
     depends_on:
-      - mongodb
-      - zookeeper
-      - kafka
+      db:
+        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
 
   # Frontend service
   frontend:
@@ -117,12 +139,14 @@ services:
     container_name: frontend
     ports:
       - "4200:80"
+    depends_on:
+      - order-microservice
     networks:
       - my-network
 
 # Volumes definition
 volumes:
-  mongodb_data:
+  db_data:
 
 # Networks definition
 networks:

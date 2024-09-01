@@ -18,13 +18,21 @@ public class OrderConsumer {
         this.emailService = emailService;
     }
 
-    @KafkaListener(
-            topics = "order_topics",
-            groupId = "${spring.kafka.consumer.group-id}"
-    )
+    @KafkaListener(topics = "order_topics", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(PizzaOrderEvent event) {
         LOGGER.info(String.format("Order event received in email service => %s", event.toString()));
         // send an email to the customer
-        emailService.notifyPizzaPlaced(event.getPizzaDto());
+        // "PLACED", "DELIVERED", "DONE"
+        switch (event.getPizzaDto().getStatus()) {
+            case "PLACED":
+                emailService.notifyPizzaPlaced(event.getPizzaDto());
+                break;
+            case "DELIVERED":
+                emailService.notifyPizzaDelivered(event.getPizzaDto());
+                break;
+            case "DONE":
+                emailService.notifyPizzaDone(event.getPizzaDto());
+                break;
+        }
     }
 }
