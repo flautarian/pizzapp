@@ -15,6 +15,7 @@ import org.bson.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PizzaDto {
+    private String id;
     private String customerName;
     private String pizzaSize;
     private String deliveryAddress;
@@ -25,6 +26,7 @@ public class PizzaDto {
     private float price;
 
     public PizzaDto(Pizza pizza) {
+        this.id = pizza.getId();
         this.customerName = pizza.getCustomerName();
         this.pizzaSize = pizza.getPizzaSize();
         this.deliveryAddress = pizza.getDeliveryAddress();
@@ -37,6 +39,7 @@ public class PizzaDto {
     }
 
     public PizzaDto(Document body) {
+        this.id = String.valueOf(body.getOrDefault("_id",""));
         this.customerName = String.valueOf(body.getOrDefault("customerName",""));
         this.pizzaSize = String.valueOf(body.getOrDefault("pizzaSize",""));
         this.deliveryAddress = String.valueOf(body.getOrDefault("deliveryAddress",""));

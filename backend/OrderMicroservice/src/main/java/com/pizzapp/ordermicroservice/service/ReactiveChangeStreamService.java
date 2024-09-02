@@ -60,7 +60,7 @@ public class ReactiveChangeStreamService {
             pizzaOrderProducer.sendMessage(pizzaOrderEvent);
     
             // inform to all websocket sessions
-            pizzaWebSocketHandler.broadcastUpdate(event.toString());
+            pizzaWebSocketHandler.broadcastUpdate(pizzaDto);
         }
         catch(Exception e){
             logger.error("Error in handleChange method", e);

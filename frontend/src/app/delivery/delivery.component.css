@@ -1,0 +1,178 @@
+:host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    /* Adjust as necessary */
+    overflow: auto;
+    /* Allows scrolling if the content is larger than the viewport */
+}
+
+h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.summary-container {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 15px;
+    width: 80%;
+    background-color: #da8300;
+
+    border-radius: 10px;
+    border-width: 3px;
+    border-color: rgb(141, 92, 0);
+    border-style: solid;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;    
+}
+
+.summary-list {
+    width: 95%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+
+    font-size: 18px;
+    float: left;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.submit {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-self: center;
+    width: 60%;
+}
+
+.button-group-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* Creates 6 equal-width columns */
+    gap: 10px;
+    /* Space between buttons */
+}
+
+.button-sizes-group-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Creates 6 equal-width columns */
+    gap: 10px;
+    /* Space between buttons */
+}
+
+.select-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+}
+
+.select-option img {
+    width: 100px;
+    /* Adjust image size */
+    height: 100px;
+    margin-bottom: 5px;
+}
+
+.option-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.select-option:hover {
+    background-color: #8fff79;
+    border-color: #37c400;
+}
+
+.select-option-selected {
+    background-color: #74ff3d;
+    border-color: #00b909;
+}
+
+.input-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.input-text {
+    width: 100%;
+    border-radius: 5px;
+    border-width: 3px;
+    border-color: #00b909;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.inputs-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+}
+
+.side {
+    flex-grow: 1;
+    flex-basis: 10em;
+}
+
+.center {
+    flex-basis: 30em;
+    padding: 1em;
+    text-align: center;
+}
+
+.red {
+    background: red;
+}
+
+.green {
+    background: green;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+}
+
+.order-delivered {
+    color: yellow;
+}
+
+.order-done {
+    color: green;
+}

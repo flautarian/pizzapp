@@ -69,10 +69,12 @@ public class PizzaWebSocketHandler implements WebSocketHandler {
         return false;
     }
 
-    public void broadcastUpdate(String message) {
+    public void broadcastUpdate(Object object) {
         sessions.forEach(session -> {
             try {
-                session.sendMessage(new TextMessage(message));
+                // initial message with list of orders
+                String json = objectMapper.writeValueAsString(object);
+                session.sendMessage(new TextMessage(json));
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -146,7 +146,7 @@ export class FrontpageComponent implements OnInit {
       Post request of data
     */
     postRequestData = (data: PizzaDto) => {
-        this.http.post<any>('http://localhost:8080/api/v1/placeorder', data)
+        this.http.post<any>('http://localhost:8090/api/v1/placeorder', data)
             .subscribe(
                 data => {
                     alert("Pizza placed successfully!");

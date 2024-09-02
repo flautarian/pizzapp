@@ -32,15 +32,15 @@ public class PizzaController {
         return pizzaService.getAllOrders();
     }
     @GetMapping("/orders/{status}")
-    public Flux<PizzaDto> getOrdersByStatus(@RequestParam String status) {
+    public Flux<PizzaDto> getOrdersByStatus(@PathVariable String status) {
         return pizzaService.getOrdersByStatus(status);
     }
     @GetMapping("/orders/{id}")
-    public Mono<PizzaDto> getOrdersById(@RequestParam String id) {
+    public Mono<PizzaDto> getOrdersById(@PathVariable String id) {
         return pizzaService.getOrderById(id);
     }
-    @PutMapping("/orders/{id}")
-    public Mono<PizzaDto> updateOrderStatus(@RequestParam String id, @RequestBody String status) {
+    @PostMapping("/orders/{id}")
+    public Mono<PizzaDto> updateOrderStatus(@PathVariable("id") String id, @RequestBody String status) {
         return pizzaService.updateOrderStatus(id, status);
     }
 }

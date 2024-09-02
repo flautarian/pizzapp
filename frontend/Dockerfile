@@ -13,8 +13,11 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
+ARG API_URL
+RUN sed -i "s|http://localhost:8090/api/v1|${API_URL}|g" src/environments/environment.prod.ts
+
 # Build the Angular app for production
-RUN npm run build
+RUN npm run build --prod
 
 # Use NGINX as the base image for serving the Angular app
 FROM nginx:alpine
