@@ -21,7 +21,7 @@ pizzaDto-microservice: is the entry gate of the orders, with:
 email-microsevice: microservice dedicated to receive the pizzaDto and send mail with that info with:
     - The kafka event consumer to receive the orders
 
-stock-microsevice: microservice dedicated to receive the pizzaDto and reduce the stock data with that info with:
+ingredient-microsevice: microservice dedicated to receive the pizzaDto and reduce the ingredient data with that info with:
     - The kafka event consumer to receive the orders
 
 
@@ -38,6 +38,6 @@ Donwload latest kafka version:
         .\bin\windows\kafka-server-start.bat .\config\server.properties
 
 In project:
-    - Run the pizzaDto, stock and email configurations and test the project with test-postman-collection.json
+    - Run the pizzaDto, ingredient and email configurations and test the project with test-postman-collection.json
 
 

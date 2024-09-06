@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { WebSocketService } from '@services/WebSocketService';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-delivery',

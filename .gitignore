@@ -8,7 +8,7 @@
 /backend/BasedomainsMicroservice/target/
 /backend/EmailMicroservice/target/
 /backend/OrderMicroservice/target/
-/backend/StockMicroservice/target/
+/backend/StockMicroservice/node_modules/
 
 # Ignore Node.js modules
 /frontend/node_modules/

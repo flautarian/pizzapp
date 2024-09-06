@@ -1,21 +1,17 @@
 package com.pizzapp.emailmicroservice.service;
 
 import com.pizzapp.base.dto.PizzaDto;
-import com.pizzapp.emailmicroservice.consumer.OrderConsumer;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmailServiceImpl {
@@ -59,8 +55,10 @@ public class EmailServiceImpl {
 
 
     private String loadTemplate(String templateName) throws IOException {
-        ClassPathResource resource = new ClassPathResource("templates/" + templateName);
-        byte[] bytes = Files.readAllBytes(Paths.get(resource.getURI()));
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("templates/" + templateName);
+        assert is != null;
+        byte[] bytes = is.readAllBytes();
         return new String(bytes);
     }
 

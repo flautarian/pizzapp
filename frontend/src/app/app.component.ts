@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { PizzaDto } from '../models/PizzaDto';
-import { WebSocketService } from '@services/WebSocketService';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',

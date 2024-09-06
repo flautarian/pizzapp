@@ -16,6 +16,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Document(collection = "pizza")
 public class Pizza {
     @Id

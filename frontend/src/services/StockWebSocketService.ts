@@ -6,9 +6,9 @@ import { environment } from 'environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class WebSocketService {
+export class StockWebSocketService {
 
-  private socket$ = webSocket(environment.wsUrl);
+  private socket$ = webSocket(environment.wsStockUrl);
 
   constructor() {}
 

@@ -1,26 +1,18 @@
-# Stage 1: Build Spring Boot App
-FROM maven:latest as spring-builder
+# Use the official Node.js image.
+FROM node:18
 
-# Set the working directory for the build context
-WORKDIR /app/backend
+# Create and set the working directory.
+WORKDIR /usr/src/app
 
-# Copy the entire project into the build context
-COPY ../ .
+# Install app dependencies.
+COPY package*.json ./
+RUN npm install
 
-# Build only the OrderMicroservice module and package it as an executable JAR
-RUN mvn clean package -pl StockMicroservice -am
+# Copy the rest of the application code.
+COPY . .
 
-# Stage 2: Serve Spring Boot App
-FROM eclipse-temurin:17-jdk-alpine
+# Expose the port the app runs on.
+EXPOSE 8091
 
-# Set the working directory in the final image
-WORKDIR /app
-
-# Copy built Spring Boot JAR from previous stage
-COPY --from=spring-builder /app/backend/StockMicroservice/target/stockmicroservice-SHADED.jar /app/stockMicroservice.jar
-
-# Expose the port the app runs on
-EXPOSE 8080
-
-# Command to run the Spring Boot app
-CMD ["java", "-jar", "/app/stockMicroservice.jar"]
+# Command to run the app.
+CMD ["node", "index.js"]

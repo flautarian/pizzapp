@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "EmailMicroserviceApplication",
+            "request": "launch",
+            "mainClass": "com.pizzapp.emailmicroservice.EmailMicroserviceApplication",
+            "projectName": "emailmicroservice"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-OrdermicroserviceApplication<ordermicroservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.pizzapp.ordermicroservice.OrdermicroserviceApplication",
+            "projectName": "ordermicroservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Stock microservice",
+            "request": "launch",
+            "command": "node index.js",
+            "cwd": "${workspaceFolder}\\backend\\StockMicroservice"
+        }
+    ]
+}
