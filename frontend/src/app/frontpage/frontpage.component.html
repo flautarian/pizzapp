@@ -1,10 +1,33 @@
-<div class="container">
-  <div class="side red">
-  </div>
-  <div class="center">
-    <!-- PIZZZA STYLE -->
-    <h2>Select pizza style</h2>
-    <form [formGroup]="form">
+<form [formGroup]="form">
+  <div class="container">
+    <div class="side red">
+      <!-- DELIVERY ADDRESS, EMAIL AND CUSTOMER NAME -->
+      <div class="inputs-container">
+        
+        <div class="input-text-container">
+          <label for="emailAddress">Email:</label>
+          <input class="input-text" type="text" id="emailAddress" name="emailAddress" formControlName="emailAddress">
+        </div>
+        
+        <div class="input-text-container">
+          <label for="customerName">Customer Name:</label>
+          <input class="input-text" type="text" id="customerName" name="customerName" formControlName="customerName">
+        </div>
+        
+        <div class="input-text-container">
+          <label for="deliveryAddress">Address:</label>
+          <input class="input-text" type="text" id="deliveryAddress" name="deliveryAddress"
+            formControlName="deliveryAddress">
+        </div>
+
+        <div *ngIf="form.value['pizzaName']" class="pizza-red-side-info">
+          <p> {{ getPizzaDisplayInfo(form.value['pizzaName']) }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="center">
+      <!-- PIZZZA STYLE -->
+      <h2>Select pizza style</h2>
       <div class="button-group-container">
         <div *ngFor="let pizza of pizzas" class="select-option pizza-name"
           (click)="selectOption($event, 'pizzaName', pizza.value, 'pizza-name')">
@@ -24,25 +47,6 @@
         </div>
       </div>
 
-      <!-- DELIVERY ADDRESS, EMAIL AND CUSTOMER NAME -->
-      <div class="inputs-container">
-        <div class="input-text-container">
-          <label for="deliveryAddress">Address:</label>
-          <input class="input-text" type="text" id="deliveryAddress" name="deliveryAddress"
-            formControlName="deliveryAddress">
-        </div>
-
-        <div class="input-text-container">
-          <label for="emailAddress">Email:</label>
-          <input class="input-text" type="text" id="emailAddress" name="emailAddress" formControlName="emailAddress">
-        </div>
-
-        <div class="input-text-container">
-          <label for="customerName">Customer Name:</label>
-          <input class="input-text" type="text" id="customerName" name="customerName" formControlName="customerName">
-        </div>
-      </div>
-
       <!-- PIZZZA EXTRA INGREDIENTS -->
       <h2>Select pizza extra ingredients <small>max one unit of each ingredient</small></h2>
       <div class="button-group-container">
@@ -52,30 +56,32 @@
           <div class="option-title">{{ingredient.name}}</div>
         </div>
       </div>
-    </form>
-  </div>
-  <div class="side green">
-    <div class="summary-container">
-      <h2>Order Summary</h2>
-      <div class="summary-list">
-        <div *ngIf="form.value['pizzaName']">
-          <p><strong>Pizza Style:</strong> {{ getPizzaNameInfo(form.value['pizzaName']) }}</p>
+    </div>
+    <div class="side green">
+      <div class="summary-container">
+        <h2>Order Summary</h2>
+        <div class="summary-list">
+          <div *ngIf="form.value['pizzaName']">
+            <p><strong>Pizza Style:</strong> {{ getPizzaNameInfo(form.value['pizzaName']) }}</p>
+          </div>
+          <div *ngIf="form.value['pizzaSize']">
+            <p><strong>Pizza Size:</strong> {{ getPizzaSizeInfo(form.value['pizzaSize']) }}</p>
+          </div>
+          <div *ngIf="form.value['extraIngredients']?.length > 0">
+            <p><strong>Extra Ingredients:</strong></p>
+            <ul>
+              <li *ngFor="let ingredient of form.value['extraIngredients'] || []">{{ getIngredientName(ingredient) }}
+              </li>
+            </ul>
+          </div>
+          <p *ngIf="form.value['price'] > 0"><strong>Total Price:</strong> {{ form.value['price'] || 0 | currency :
+            'EUR' }}</p>
         </div>
-        <div *ngIf="form.value['pizzaSize']">
-          <p><strong>Pizza Size:</strong> {{ getPizzaSizeNameInfo(form.value['pizzaSize']) }}</p>
-        </div>
-        <div *ngIf="form.value['extraIngredients']?.length > 0">
-          <p><strong>Extra Ingredients:</strong></p>
-          <ul>
-            <li *ngFor="let ingredient of form.value['extraIngredients'] || []">{{ getIngredientName(ingredient) }}</li>
-          </ul>
-        </div>
-        <p *ngIf="form.value['price'] > 0" ><strong>Total Price:</strong> {{ form.value['price'] || 0 | currency : 'EUR' }}</p>
+
+        <!-- SUBMIT -->
+        <button (click)="submitForm()" type="submit" class="submit" [disabled]="form.invalid">Submit</button> 
+
       </div>
-
-      <!-- SUBMIT -->
-      <button (click)="submitForm()" type="submit" class="submit" [disabled]="form.invalid">Submit</button>
-
     </div>
   </div>
-</div>
+</form>

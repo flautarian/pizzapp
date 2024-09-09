@@ -3,22 +3,35 @@
   </div>
   <div class="center">
     <h2>Orders:</h2>
-    <div *ngFor="let order of orders" ngIf="order.status === 'PLACED'">
-      <p>{{ order?.pizzaName }}</p>
-      <label>Status:
-        <span [ngClass]="order?.status === 'PLACED' ? 'order-pendent' : 'order-delivered'">{{ order?.status }}</span>
-      </label>
-      <label>Price:
-        <span>{{ order?.price }}</span>
-      </label>
-      <label>Customer Name:
-        <span>{{ order?.customerName }}</span>
-      </label>
-      <label>Address:
-        <span>{{ order?.deliveryAddress }}</span>
-      </label>
-      <button (click)="updateOrderStatus(order?.id)">Chekcout to delivery</button>
-    </div>
+    <div *ngFor="let order of orders">
+      <div *ngIf="order.status === 'PLACED'" class="order-pendent-container">
+        <div class="order-pendent-title">
+          <p>{{ order?.pizzaName }}</p>
+        </div>
+        <div class="order-pendent-details"> 
+          <div class="order-pendent-details-left">
+            <div>
+              <label>Status:</label>
+            </div>
+            <div>
+              <span [ngClass]="order?.status === 'PLACED' ? 'order-pendent' : 'order-delivered'">{{ order?.status }}</span>
+            </div>
+          </div>
+          <div class="order-pendent-details-right">
+            <label>Customer Name:
+              <span>{{ order?.customerName }}</span>
+            </label>
+            <label>Address:
+              <span>{{ order?.deliveryAddress }}</span>
+            </label>
+            <label>Price:
+              <span>{{ order?.price }}</span>
+            </label>
+          </div>
+        </div>
+        <button (click)="updateOrderStatus(order?.id)" class="order-pendent-details-button">Chekcout to delivery</button>
+      </div>
+      </div>
   </div>
   <div class="side green">
   </div>

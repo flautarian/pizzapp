@@ -9,17 +9,13 @@
     /* Adjust as necessary */
     overflow: auto;
     /* Allows scrolling if the content is larger than the viewport */
+    
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
 }
 
 h2 {
     text-align: center;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
 .summary-container {
@@ -59,6 +55,15 @@ form {
     margin-bottom: 10px;
     align-self: center;
     width: 60%;
+    font-size: larger;
+    background: rgb(255, 199, 116);
+
+    border-radius: 7px 7px 7px 7px;
+    cursor: pointer;
+}
+
+.submit:hover {
+    animation: gradientShift 0.35s ease forwards;
 }
 
 .button-group-container {
@@ -115,12 +120,44 @@ form {
     border-color: #00b909;
 }
 
+.pizza-red-side-info {
+    top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 15px;
+    justify-content: space-between;
+}
+
 .input-text-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
+}
+
+.inputs-container {
+    position: -webkit-sticky;
+    position: sticky;
+    align-self: center;
+    top: 15px;
+    width: 80%;
+    background-color: #da8300;
+
+    border-radius: 10px;
+    border-width: 3px;
+    border-color: rgb(141, 92, 0);
+    border-style: solid;
+
+    padding: 15px;
+    margin-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;    
 }
 
 .input-text {
@@ -132,18 +169,11 @@ form {
     font-weight: bolder;
 }
 
-.inputs-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .container {
     display: flex;
-    align-items: stretch;
-    margin: 0;
-    padding: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .side {
@@ -159,6 +189,10 @@ form {
 
 .red {
     background: red;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 
@@ -168,4 +202,14 @@ form {
     flex-direction: column;
     align-items: center;
     justify-content: top;
+}
+
+@keyframes gradientShift {
+    0% {
+        background: rgb(255, 199, 116);
+    }
+    100% {
+        background: rgb(255, 153, 0);
+        font-weight: bold;
+    }
 }

@@ -19,17 +19,22 @@ export class BackendComponent {
 
     ngOnInit(): void {
         this.webSocketService.getUpdates().subscribe(update => {
-            const index = this.orders.findIndex(order => order.id === update.id);
-            if (index !== -1) {
-                this.orders[index] = update;
-            } else {
-                this.orders.push(update);
+            try{
+                const index = this.orders.findIndex(order => order.id === update.id);
+                if (index !== -1) {
+                    this.orders[index] = update;
+                } else {
+                    this.orders.push(update);
+                }
+            }
+            catch(e){
+                console.error('Error:', e);
             }
         });
     }
 
     updateOrderStatus(id: string) {
-        this.http.post<any>(environment.apiUrl + '/orders/' + id, { status: "DELIVERED" })
+        this.http.post<any>(`${environment.apiUrl}/order/orders/${id}`, { status: "DELIVERED" })
             .subscribe(
                 data => {
                     alert("Order status updated successfully!");

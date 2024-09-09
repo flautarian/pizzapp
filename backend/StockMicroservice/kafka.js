@@ -1,9 +1,21 @@
 const { Kafka } = require('kafkajs');
-const ingredientsController = require('./controller/ingredientController');
+const stockService = require('@service/ingredientService');
+
+const setBroadcastFunction = (broadcastFn) => {
+    stockService.setBroadcastFunction(broadcastFn);
+};
+
 
 const kafka = new Kafka({
     brokers: [process.env.KAFKA_BOOTSTRAP_SERVERS || 'localhost:9093']
 });
+
+const sizesTable = {
+    'small': 1,
+    'medium': 2,
+    'large': 3,
+    'familiar': 4
+}
 
 // Producer instance
 const producer = kafka.producer();
@@ -36,6 +48,23 @@ const consumeMessages = async () => {
                 offset: message.offset,
                 value: message.value.toString(),
             });
+            
+            json = JSON.parse(message.value.toString());
+            if (json.status === 'PLACED') {
+                pizzaDto = json['pizzaDto'];
+                let quantity = 1 * sizesTable[pizzaDto.pizzaSize.toLowerCase()]
+                if(!!pizzaDto && pizzaDto.extraIngredients) {
+                    for (const ingredient of pizzaDto.extraIngredients) {
+                        try{
+                            console.log(`Discounting ${quantity} stock from ${ingredient}`);  
+                            await stockService.destock(ingredient, quantity);
+                        }
+                        catch(e){
+                            console.log(`Error destocking ${ingredient}: ${e.message}`);
+                        }
+                    }
+                }
+            }
         },
     });
 };
@@ -44,4 +73,4 @@ producer.connect().catch(console.error);
 
 consumeMessages().catch(console.error);
 
-module.exports = { sendMessage, consumeMessages };
+module.exports = { sendMessage, consumeMessages, setBroadcastFunction };

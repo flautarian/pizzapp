@@ -5,7 +5,7 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-    container_name: db
+    container_name: order-db
     hostname: db
     restart: always
     healthcheck:
@@ -24,7 +24,7 @@ services:
   # Redis service
   redis:
     image: "redis:latest"
-    container_name: "redis"
+    container_name: "stock-db"
     hostname: "redis"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
@@ -120,6 +120,8 @@ services:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
     depends_on:
+      order-microservice:
+        condition: service_started
       redis:
         condition: service_healthy
       kafka:
@@ -144,6 +146,8 @@ services:
     networks:
       - my-network
     depends_on:
+      order-microservice:
+        condition: service_started
       db:
         condition: service_healthy
       zookeeper:
@@ -162,8 +166,10 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      - order-microservice
-      - stock-microservice
+      order-microservice:
+        condition: service_started
+      stock-microservice:
+        condition: service_started
     networks:
       - my-network
 

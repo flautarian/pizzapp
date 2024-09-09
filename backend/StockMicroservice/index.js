@@ -1,7 +1,9 @@
+require('module-alias/register')
 const express = require('express');
 const bodyParser = require('body-parser');
 const WebSocket = require('ws');
-const routes = require('./controller/routes');
+const kafka = require('./kafka');
+const routes = require('@src/routes');
 
 const app = express();
 const port = process.env.PORT || 8091;
@@ -15,8 +17,7 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
     console.log('New WebSocket connection');
-    
-    ws.on('message', (message) => {
+    ws.on('message', async (message) => {
         console.log('Received WebSocket message:', message);
     });
 });
@@ -30,16 +31,17 @@ const broadcast = (message) => {
     });
 };
 
-// Middleware to use body-parser
-app.use(bodyParser.json());
-app.use('/api/v1/stock', routes);
-
 // Example of broadcasting stock changes
 const broadcastStockChange = (ingredient) => {
     const message = JSON.stringify({ type: 'stock-update', ingredient });
     broadcast(message);
 };
 
-// Modify stock controller to include WebSocket broadcast
-const ingredientsController = require('./controller/ingredientController');
-ingredientsController.broadcastStockChange = broadcastStockChange;
+// Set the WebSocket broadcast function in routing to propagate to all controllers
+routes.setBroadcastFunction(broadcastStockChange);
+// Set the WebSocket broadcast function in kafaka to give to the consumer the hability to communicate the incoming message changes
+kafka.setBroadcastFunction(broadcastStockChange);
+
+// Middleware to use body-parser
+app.use(bodyParser.json());
+app.use('/api/v1/stock', routes.router);

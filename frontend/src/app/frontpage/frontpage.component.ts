@@ -5,6 +5,7 @@ import { PizzaDto } from 'models/PizzaDto';
 import { Utils } from 'utils/utils'; // Import the utility class
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-frontpage',
@@ -106,7 +107,7 @@ export class FrontpageComponent implements OnInit {
         return '';
     }
 
-    getPizzaSizeNameInfo(value: string): string {
+    getPizzaSizeInfo(value: string): string {
         let size = this.pizzaSizes.find((size: { value: string, name: string }) => size.value === value) || null;
         if (!!size)
             return size.name + ' (' + this.currencyPipe.transform(size.price, 'EUR') + ')';
@@ -120,6 +121,13 @@ export class FrontpageComponent implements OnInit {
         return '';
     }
 
+    getPizzaDisplayInfo(value: string): string {
+        console.log(value);
+        let pizza = this.pizzas.find((pizza: { value: string, name: string }) => pizza.value === value) || null;
+        if (!!pizza)
+            return pizza.info;
+        return '';
+    }
 
     recalculatePrice = () => {
         let pizzaSize = this.form.value["pizzaSize"];
@@ -146,7 +154,7 @@ export class FrontpageComponent implements OnInit {
       Post request of data
     */
     postRequestData = (data: PizzaDto) => {
-        this.http.post<any>('http://localhost:8090/api/v1/order/placeorder', data)
+        this.http.post<any>(`${environment.apiUrl}/order/placeorder`, data)
             .subscribe(
                 data => {
                     alert("Pizza placed successfully!");

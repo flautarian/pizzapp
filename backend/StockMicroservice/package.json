@@ -13,7 +13,15 @@
     "express": "^4.19.2",
     "kafka-node": "^5.0.0",
     "kafkajs": "^2.2.4",
+    "module-alias": "^2.2.3",
     "redis": "^4.7.0",
     "ws": "^8.18.0"
-  }
+  },
+  "_moduleAliases": {
+      "@src": "src",
+      "@controller": "src/controller",
+      "@service": "src/service",
+      "@redisClient": "redisClient",
+      "@kafkaProducer": "kafka"
+    }
 }
