@@ -16,7 +16,7 @@ const addInitialStockData = async (redisClient) => {
         "anchovies",
         "ham",
         "chicken",
-        "jalapeños",
+        "jalapenos",
         "parmesancheese",
         "bbqsauce",
         "buffalosauce"

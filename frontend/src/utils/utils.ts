@@ -1,25 +1,27 @@
+import { IngredientDto } from "models/IngerdientDto";
+
 // src/app/utils/utils.ts
 export class Utils {
-    static availablePizzaIngredients(): any[] {
+    static availablePizzaIngredients(): IngredientDto[] {
         return [
-            { name: 'Cheese', value: 'cheese', price: 0.5 },
-            { name: 'Pepperoni', value: 'pepperoni', price: 1.0 },
-            { name: 'Mushrooms', value: 'mushroom', price: 0.7 },
-            { name: 'Onions', value: 'onions', price: 0.5 },
-            { name: 'Sausage', value: 'sausage', price: 1.2 },
-            { name: 'Bacon', value: 'bacon', price: 1.3 },
-            { name: 'Black Olives', value: 'blackolives', price: 0.8 },
-            { name: 'Green Peppers', value: 'greenpeppers', price: 0.6 },
-            { name: 'Pineapple', value: 'pineapple', price: 0.9 },
-            { name: 'Spinach', value: 'spinach', price: 0.7 },
-            { name: 'Tomatoes', value: 'tomatoes', price: 0.6 },
-            { name: 'Anchovies', value: 'anchovies', price: 1.4 },
-            { name: 'Ham', value: 'ham', price: 1.1 },
-            { name: 'Chicken', value: 'chicken', price: 1.5 },
-            { name: 'Jalapeños', value: 'jalapenos', price: 0.7 },
-            { name: 'Parmesan Cheese', value: 'parmesancheese', price: 0.9 },
-            { name: 'BBQ Sauce', value: 'bbqsauce', price: 0.7 },
-            { name: 'Buffalo Sauce', value: 'buffalosauce', price: 0.7 }
+            { name: 'Cheese', value: 'cheese', price: 0.5, quantity: 0 },
+            { name: 'Pepperoni', value: 'pepperoni', price: 1.0, quantity: 0  },
+            { name: 'Mushrooms', value: 'mushroom', price: 0.7, quantity: 0  },
+            { name: 'Onions', value: 'onions', price: 0.5, quantity: 0  },
+            { name: 'Sausage', value: 'sausage', price: 1.2, quantity: 0  },
+            { name: 'Bacon', value: 'bacon', price: 1.3, quantity: 0  },
+            { name: 'Black Olives', value: 'blackolives', price: 0.8, quantity: 0  },
+            { name: 'Green Peppers', value: 'greenpeppers', price: 0.6, quantity: 0  },
+            { name: 'Pineapple', value: 'pineapple', price: 0.9, quantity: 0  },
+            { name: 'Spinach', value: 'spinach', price: 0.7, quantity: 0  },
+            { name: 'Tomatoes', value: 'tomatoes', price: 0.6, quantity: 0  },
+            { name: 'Anchovies', value: 'anchovies', price: 1.4, quantity: 0  },
+            { name: 'Ham', value: 'ham', price: 1.1, quantity: 0  },
+            { name: 'Chicken', value: 'chicken', price: 1.5, quantity: 0 },
+            { name: 'Jalapeños', value: 'jalapenos', price: 0.7, quantity: 0  },
+            { name: 'Parmesan Cheese', value: 'parmesancheese', price: 0.9, quantity: 0  },
+            { name: 'BBQ Sauce', value: 'bbqsauce', price: 0.7, quantity: 0  },
+            { name: 'Buffalo Sauce', value: 'buffalosauce', price: 0.7, quantity: 0  }
         ];
     }
     

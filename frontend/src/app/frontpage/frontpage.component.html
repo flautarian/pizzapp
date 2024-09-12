@@ -1,5 +1,6 @@
 <form [formGroup]="form">
   <div class="container">
+    <!-- RED SIDE -->
     <div class="side red">
       <!-- DELIVERY ADDRESS, EMAIL AND CUSTOMER NAME -->
       <div class="inputs-container">
@@ -25,12 +26,13 @@
         </div>
       </div>
     </div>
+    <!--WHITE SIDE -->
     <div class="center">
       <!-- PIZZZA STYLE -->
       <h2>Select pizza style</h2>
       <div class="button-group-container">
-        <div *ngFor="let pizza of pizzas" class="select-option pizza-name"
-          (click)="selectOption($event, 'pizzaName', pizza.value, 'pizza-name')">
+        <div *ngFor="let pizza of pizzas" class="select-option pizza-name" id="{{pizza.value}}-id"
+          (click)="selectOption('pizzaName', pizza.value, 'pizza-name')">
           <img [src]="'/assets/img/'+pizza.value+'.png'" alt="{{pizza.name}}">
           <div class="option-title">{{pizza.name}}</div>
         </div>
@@ -39,8 +41,8 @@
       <!-- PIZZZA SIZE -->
       <h2>Select pizza size</h2>
       <div class="button-sizes-group-container" style="align-items: center;">
-        <div *ngFor="let size of pizzaSizes; let i = index" class="select-option pizza-size"
-          style="justify-content: center;" (click)="selectOption($event, 'pizzaSize',  size.value, 'pizza-size')">
+        <div *ngFor="let size of pizzaSizes; let i = index" class="select-option pizza-size" id="{{size.value}}-id"
+          style="justify-content: center;" (click)="selectOption('pizzaSize',  size.value, 'pizza-size')">
           <img src="/assets/img/pizza.png" [style.width.px]="60 + (i * 20)" [style.height.px]="60 + (i * 20)"
             alt="Option 1">
           <div class="option-title">{{size.name}}</div>
@@ -50,13 +52,14 @@
       <!-- PIZZZA EXTRA INGREDIENTS -->
       <h2>Select pizza extra ingredients <small>max one unit of each ingredient</small></h2>
       <div class="button-group-container">
-        <div *ngFor="let ingredient of pizzaIngredients; let i = index" class="select-option pizza-extra"
-          style="justify-content: center;" (click)="selectIngredient($event,  ingredient.value)">
+        <div *ngFor="let ingredient of pizzaIngredients; let i = index" id="{{ingredient.value}}-id" [ngClass]="ingredient.quantity >= getNeededQuantity(ingredient.value) ? 'select-option pizza-extra' : 'select-option pizza-extra select-option-disabled'"
+          style="justify-content: center;" (click)="selectIngredient(ingredient.value)">
           <img [src]="'/assets/img/ingredients/'+ingredient.value+'.png'" alt="{{ingredient.name}}">
           <div class="option-title">{{ingredient.name}}</div>
         </div>
       </div>
     </div>
+    <!-- GREEN SIDE -->
     <div class="side green">
       <div class="summary-container">
         <h2>Order Summary</h2>

@@ -10,10 +10,6 @@ export const routes: Routes = [
         path: 'backend',
         loadChildren: () => import('./backend/backend.module').then(m => m.BackendModule)
     },
-    {
-        path: 'delivery',
-        loadChildren: () => import('./delivery/delivery.module').then(m => m.DeliveryModule)
-    },
     { path: '', redirectTo: '/frontpage', pathMatch: 'full' },
     { path: '**', redirectTo: '/frontpage' }
 ];

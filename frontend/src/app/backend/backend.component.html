@@ -1,20 +1,69 @@
 <div class="container">
   <div class="side red">
-  </div>
-  <div class="center">
     <h2>Orders:</h2>
     <div *ngFor="let order of orders">
       <div *ngIf="order.status === 'PLACED'" class="order-pendent-container">
         <div class="order-pendent-title">
           <p>{{ order?.pizzaName }}</p>
         </div>
-        <div class="order-pendent-details"> 
+        <div class="order-pendent-details">
+          <div class="order-pendent-details-left">
+            <label>Customer Name:
+              <span>{{ order?.customerName }}</span>
+            </label>
+            <label>Pizza:
+              <span>{{ order?.pizzaName }}</span>
+            </label>
+            <div>
+              <label>Status:</label>
+            </div>
+            <div>
+              <span [ngClass]="order?.status === 'PLACED' ? 'order-pendent' : 'order-delivered'">{{ order?.status
+                }}</span>
+            </div>
+          </div>
+          <div class="order-pendent-details-right">
+            <label>Extras:
+              <ul>
+                <li *ngFor="let ingredient of order?.extraIngredients">{{ ingredient }}</li>
+              </ul>
+            </label>
+          </div>
+        </div>
+        <button (click)="updateOrderStatus(order?.id, 'DELIVERED')" class="order-pendent-details-button">Chekcout to
+          delivery</button>
+      </div>
+    </div>
+  </div>
+  <div class="center">
+    <!-- PIZZZA EXTRA INGREDIENTS -->
+    <h2>Ingredient Stock</h2>
+    <div class="button-group-container">
+      <div *ngFor="let ingredient of pizzaIngredients; let i = index" class="select-option pizza-extra"
+        style="justify-content: center;" (click)="restockIngredient($event,  ingredient.value)">
+        <div>
+          <img [src]="'/assets/img/ingredients/' + ingredient.value + '.png'" alt="{{ingredient.name}}">
+          <div class="option-title">{{ingredient.name}}</div>
+          <div class="option-title">{{ingredient.quantity}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="side green">
+    <h2>Delivers:</h2>
+    <div *ngFor="let order of orders">
+      <div *ngIf="order.status === 'DELIVERED'" class="order-pendent-container">
+        <div class="order-pendent-title">
+          <p>{{ order?.pizzaName }}</p>
+        </div>
+        <div class="order-pendent-details">
           <div class="order-pendent-details-left">
             <div>
               <label>Status:</label>
             </div>
             <div>
-              <span [ngClass]="order?.status === 'PLACED' ? 'order-pendent' : 'order-delivered'">{{ order?.status }}</span>
+              <span [ngClass]="order?.status === 'DELIVERED' ? 'order-pendent' : 'order-delivered'">{{ order?.status
+                }}</span>
             </div>
           </div>
           <div class="order-pendent-details-right">
@@ -29,10 +78,9 @@
             </label>
           </div>
         </div>
-        <button (click)="updateOrderStatus(order?.id)" class="order-pendent-details-button">Chekcout to delivery</button>
+        <button (click)="updateOrderStatus(order?.id, 'DONE')" class="order-pendent-details-button">Mark as
+          done</button>
       </div>
-      </div>
-  </div>
-  <div class="side green">
+    </div>
   </div>
 </div>

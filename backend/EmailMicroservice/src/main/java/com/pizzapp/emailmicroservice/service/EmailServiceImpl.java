@@ -3,25 +3,16 @@ package com.pizzapp.emailmicroservice.service;
 import com.pizzapp.base.dto.PizzaDto;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.Quota.Resource;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.util.ByteArrayDataSource;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.InputStreamSource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -39,6 +30,21 @@ public class EmailServiceImpl {
 
     public EmailServiceImpl(JavaMailSender emailSender) {
         this.emailSender = emailSender;
+    }
+
+    private String loadTemplate(String templateName) throws IOException {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("templates/" + templateName);
+        assert is != null;
+        byte[] bytes = is.readAllBytes();
+        return new String(bytes);
+    }
+
+    private String populateTemplate(String template, Map<String, String> replacements) {
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            template = template.replace("{{" + entry.getKey() + "}}", entry.getValue());
+        }
+        return template;
     }
 
     public void notifyPizzaPlaced(PizzaDto pizza) throws MessagingException {
@@ -74,21 +80,6 @@ public class EmailServiceImpl {
         }
     }
 
-    private String loadTemplate(String templateName) throws IOException {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("templates/" + templateName);
-        assert is != null;
-        byte[] bytes = is.readAllBytes();
-        return new String(bytes);
-    }
-
-    private String populateTemplate(String template, Map<String, String> replacements) {
-        for (Map.Entry<String, String> entry : replacements.entrySet()) {
-            template = template.replace("{{" + entry.getKey() + "}}", entry.getValue());
-        }
-        return template;
-    }
-
     public void notifyPizzaDelivered(PizzaDto pizzaDto) throws MessagingException {
 
         // Load and populate the template
@@ -99,7 +90,9 @@ public class EmailServiceImpl {
             String htmlTemplate;
             htmlTemplate = loadTemplate("order_delivered.html");
             Map<String, String> replacements = Map.of(
-                    "deliveryAddress", pizzaDto.getDeliveryAddress());
+                    "deliveryAddress", pizzaDto.getDeliveryAddress(),
+                    "clientName", pizzaDto.getCustomerName());
+                    
             String htmlContent = populateTemplate(htmlTemplate, replacements);
 
             helper.setFrom(username);
@@ -128,7 +121,12 @@ public class EmailServiceImpl {
 
             String htmlTemplate;
             htmlTemplate = loadTemplate("order_done.html");
-            String htmlContent = populateTemplate(htmlTemplate, new HashMap<>());
+            
+            Map<String, String> replacements = Map.of(
+                    "deliveryAddress", pizzaDto.getDeliveryAddress(),
+                    "clientName", pizzaDto.getCustomerName());
+
+            String htmlContent = populateTemplate(htmlTemplate, replacements);
 
             helper.setFrom(username);
             helper.setTo(pizzaDto.getEmailAddress());

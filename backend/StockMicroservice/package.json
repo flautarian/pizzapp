@@ -10,7 +10,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "express": "^5.0.0",
     "kafka-node": "^5.0.0",
     "kafkajs": "^2.2.4",
     "module-alias": "^2.2.3",
@@ -18,10 +19,10 @@
     "ws": "^8.18.0"
   },
   "_moduleAliases": {
-      "@src": "src",
-      "@controller": "src/controller",
-      "@service": "src/service",
-      "@redisClient": "redisClient",
-      "@kafkaProducer": "kafka"
-    }
+    "@src": "src",
+    "@controller": "src/controller",
+    "@service": "src/service",
+    "@redisClient": "redisClient",
+    "@kafkaProducer": "kafka"
+  }
 }

@@ -4,9 +4,13 @@ const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const kafka = require('./kafka');
 const routes = require('@src/routes');
+const stockService = require('@service/ingredientService');
+var cors = require('cors')
 
 const app = express();
 const port = process.env.PORT || 8091;
+app.use(cors())
+
 
 // Setup WebSocket server
 const server = app.listen(port, () => {
@@ -15,8 +19,10 @@ const server = app.listen(port, () => {
 
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', (ws) => {
+wss.on('connection', async (ws) => {
     console.log('New WebSocket connection');
+    let stock = await stockService.getAllStock();
+    broadcast(JSON.stringify(stock));
     ws.on('message', async (message) => {
         console.log('Received WebSocket message:', message);
     });
@@ -38,7 +44,7 @@ const broadcastStockChange = (ingredient) => {
 };
 
 // Set the WebSocket broadcast function in routing to propagate to all controllers
-routes.setBroadcastFunction(broadcastStockChange);
+routes.initRoutes(broadcastStockChange, stockService);
 // Set the WebSocket broadcast function in kafaka to give to the consumer the hability to communicate the incoming message changes
 kafka.setBroadcastFunction(broadcastStockChange);
 

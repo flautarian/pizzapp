@@ -1,7 +1,9 @@
 // stockController.js
-const stockService = require('@service/ingredientService');
 
-exports.setBroadcastFunction = (broadcastFn) => {
+var stockService = null;
+
+exports.initController = (broadcastFn, service) => {
+    stockService = service;
     stockService.setBroadcastFunction(broadcastFn);
 };
 

@@ -6,8 +6,8 @@ const controller = require('@controller/ingredientController');
 let broadcastStockChange = null;
 
 // Function to set the broadcast function from index.js
-const setBroadcastFunction = (broadcastFn) => {
-    controller.setBroadcastFunction(broadcastFn);
+const initRoutes = (broadcastFn, service) => {
+    controller.initController(broadcastFn, service);
 };
 
 // Add stock
@@ -25,4 +25,4 @@ router.post('/destock', controller.destock);
 // Get all stock
 router.get('/stock', controller.getAllStock);
 
-module.exports = {router, setBroadcastFunction};
+module.exports = {router, initRoutes};

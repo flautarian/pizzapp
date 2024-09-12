@@ -31,7 +31,12 @@ h2 {
 
 .side {
     flex-grow: 1;
-    flex-basis: 10em;
+    flex-basis: 15em;
+    padding: 1em;
+    text-align: center;
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .center {
@@ -66,6 +71,7 @@ h2 {
 .order-pendent-container {
     background-color: rgb(255, 182, 72);
     border-radius: 10px;
+    box-shadow: 0 5px 0px rgb(119, 77, 0);
 }
 
 .order-pendent-title {
@@ -111,11 +117,58 @@ h2 {
     height: 100%;
     background: rgb(255, 199, 116);
     border-radius: 0px 0px 10px 10px;
+    border: 5px;
     cursor: pointer;
 }
 
 .order-pendent-details-button:hover {
     animation: gradientShift 0.35s ease forwards;
+}
+
+
+.button-group-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.option-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.select-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid #999999;
+    border-bottom: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+
+    margin-top: 0px;
+    margin-bottom: 5px;
+    box-shadow: 0 5px 0px rgba(0, 0, 0, 0.5);
+
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+}
+
+.select-option:active {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.5);
+}
+
+.select-option img {
+    width: 60px;
+    /* Adjust image size */
+    height: 60px;
+    margin-bottom: 5px;
 }
 
 @keyframes gradientShift {

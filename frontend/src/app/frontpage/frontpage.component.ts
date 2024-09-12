@@ -6,6 +6,8 @@ import { Utils } from 'utils/utils'; // Import the utility class
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { environment } from 'environments/environment';
+import { StockWebSocketService } from '@services/StockWebSocketService';
+import { IngredientDto } from 'models/IngerdientDto';
 
 @Component({
     selector: 'app-frontpage',
@@ -34,7 +36,8 @@ export class FrontpageComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private http: HttpClient) {
+        private http: HttpClient,
+        private stockWebSocketService: StockWebSocketService) {
     }
 
     ngOnInit(): void {
@@ -47,9 +50,28 @@ export class FrontpageComponent implements OnInit {
             extraIngredients: [this.formData.extraIngredients],
             price: [this.formData.price, Validators.required]
         });
+
         this.pizzas = Utils.availablePizzas();
         this.pizzaSizes = Utils.availablePizzaSizes();
         this.pizzaIngredients = Utils.availablePizzaIngredients();
+
+        this.stockWebSocketService.getUpdates().subscribe(update => {
+            if (Array.isArray(update)) {
+                update.forEach(stockUpdate => {
+                    const index = this.pizzaIngredients.findIndex((ingredient: IngredientDto) => ingredient.value === stockUpdate.name);
+                    if (index !== -1) {
+                        this.pizzaIngredients[index].quantity = Number(stockUpdate.quantity);
+                    }
+                });
+            }
+            else {
+                let ingredientUpdate = update['ingredient'];
+                const index = this.pizzaIngredients.findIndex((ingredient: IngredientDto) => ingredient.value === ingredientUpdate.name);
+                if (index !== -1) {
+                    this.pizzaIngredients[index].quantity = Number(ingredientUpdate.quantity);
+                }
+            }
+        });
     }
 
     /* 
@@ -64,8 +86,8 @@ export class FrontpageComponent implements OnInit {
             alert("Error detected in fields validation, please check the form and try again");
     }
 
-    selectOption = (event: MouseEvent, key: string, value: string, cssSuffix: string) => {
-        let element = event.target as HTMLElement;
+    selectOption = (key: string, value: string, cssSuffix: string) => {
+        let element = document.getElementById(value + '-id') as HTMLElement;
         this.form.patchValue({ [key]: value });
         let options = document.querySelectorAll('.' + cssSuffix);
         options.forEach(option => option.classList.remove('select-option-selected'));
@@ -78,8 +100,34 @@ export class FrontpageComponent implements OnInit {
         this.recalculatePrice();
     }
 
-    selectIngredient = (event: MouseEvent, value: string) => {
-        let element = event.target as HTMLElement;
+    getNeededQuantity(ingredientName: string): number {
+        let neededQuantity = 1;
+        let pizzaSize = this.form.value["pizzaSize"];
+        if (!!pizzaSize)
+            neededQuantity = this.pizzaSizes.find((size: { value: string; }) => size.value === pizzaSize).price;
+        
+        let currentValues = this.form.value["extraIngredients"];
+        if (currentValues.includes(ingredientName)) {
+            let ingredient = this.pizzaIngredients.find((ingredient: IngredientDto) => ingredient.value === ingredientName) || null;
+            if (ingredient.quantity < neededQuantity) {
+                let element = document.getElementById(ingredientName + '-id') as HTMLElement;
+                currentValues = currentValues.filter((item: string) => item !== ingredientName);
+                this.form.patchValue({ "extraIngredients": currentValues });
+                this.toggleElementSelected(element);
+            }
+        }
+        return neededQuantity;
+    }
+
+    selectIngredient = (value: string) => {
+        let element = document.getElementById(value + '-id') as HTMLElement;
+        let ingredient = this.pizzaIngredients.find((ingredient: IngredientDto) => ingredient.value === value) || null;
+
+        if (!!ingredient && ingredient.quantity < this.getNeededQuantity(value)) {
+            alert("Ingredient not available");
+            return;
+        }
+
         let currentValues = this.form.value["extraIngredients"];
         if (currentValues.includes(value))
             currentValues = currentValues.filter((item: string) => item !== value);
@@ -88,16 +136,16 @@ export class FrontpageComponent implements OnInit {
 
         this.form.patchValue({ "extraIngredients": currentValues });
 
-        let parent = element;
-        if (element.className.indexOf('pizza-extra') < 0)
-            parent = element.parentNode as HTMLElement;
-
-        if (parent.className.indexOf('select-option-selected') < 0)
-            parent.classList.add('select-option-selected');
-        else
-            parent.classList.remove('select-option-selected');
+        this.toggleElementSelected(element);
         /* RECALC PRICE */
         this.recalculatePrice();
+    }
+
+    toggleElementSelected = (element: HTMLElement) => {
+        if (element.className.indexOf('select-option-selected') < 0)
+            element.classList.add('select-option-selected');
+        else
+            element.classList.remove('select-option-selected');
     }
 
     getPizzaNameInfo(value: string): string {

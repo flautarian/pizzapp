@@ -1,7 +1,7 @@
 // ingredientService.js
 const redisClient = require('@redisClient');
 
-let broadcastStockChange = null;
+var broadcastStockChange = null;
 
 // Function to set the broadcast function from index.js
 const setBroadcastFunction = (broadcastFn) => {
@@ -10,28 +10,29 @@ const setBroadcastFunction = (broadcastFn) => {
 
 const HASHSET_KEY = 'Ingredients';
 
+// Fetch the quantity field from the hash
 const getStockQuantity = async (name) => {
-    return await redisClient.HGET(HASHSET_KEY, name);
+    const result = await redisClient.HGET(`${HASHSET_KEY}:${name}`, `quantity`);
+    return result;
 };
 
+// Update the quantity field in the hash
 const updateStockQuantity = async (name, newQuantity) => {
-    const result = await redisClient.HSET(HASHSET_KEY, name, newQuantity);
+    const result = await redisClient.HSET(`${HASHSET_KEY}:${name}`, `quantity`, newQuantity);
     if (broadcastStockChange)
         broadcastStockChange({ name, quantity: newQuantity });
     return result;
 };
 
-
 const addStock = async (name) => {
-    let dbName = `${HASHSET_KEY}:${name}`;
-    const currentQuantity = await getStockQuantity(dbName);
+    const currentQuantity = await getStockQuantity(name);
     if (!currentQuantity) {
         throw new Error('No stock found');
     }
 
     const newQuantity = parseInt(currentQuantity, 10) + 1;
-    await updateStockQuantity(dbName, newQuantity);
-    
+    await updateStockQuantity(name, newQuantity);
+
     if (broadcastStockChange)
         broadcastStockChange({ name, quantity: newQuantity });
     return newQuantity;
@@ -39,13 +40,18 @@ const addStock = async (name) => {
 
 const restock = async (name) => {
     const currentQuantity = await getStockQuantity(name);
+    if (!currentQuantity) {
+        throw new Error('No stock found');
+    }
+
     const newQuantity = parseInt(currentQuantity, 10) + 1;
     await updateStockQuantity(name, newQuantity);
-    
+
     if (broadcastStockChange)
         broadcastStockChange({ name, quantity: newQuantity });
     return newQuantity;
 };
+
 
 const restockAll = async (name) => {
     const keys = await redisClient.KEYS(`${HASHSET_KEY}:*`);
