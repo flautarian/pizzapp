@@ -17,7 +17,7 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy built Spring Boot JAR from previous stage
-COPY --from=spring-builder /app/backend/OrderMicroservice/target/ordermicroservice-SHADED.jar /app/orderMicroservice.jar
+COPY --from=spring-builder /app/backend/OrderMicroservice/target/orderMicroservice-jar-with-dependencies.jar /app/orderMicroservice.jar
 
 # Expose the port the app runs on
 EXPOSE 8080

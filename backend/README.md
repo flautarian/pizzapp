@@ -14,7 +14,7 @@ The microservices that composes this project are:
 
 base-domain: Module dedicated to keep all the common classes
 
-pizzaDto-microservice: is the entry gate of the orders, with:
+order-microservice: is the entry gate of the orders, with:
     - The controller that have the /orders endpoint
     - The kafka event producer to communicate the pizzaDto to other microservices
 

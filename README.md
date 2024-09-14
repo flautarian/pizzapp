@@ -19,8 +19,8 @@ To run the project locally, make sure you have Docker and Docker Compose install
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/pizza-ristorante.git
-    cd pizza-ristorante
+    git clone https://github.com/flautarian/pizzapp.git
+    cd pizzapp
     ```
 
 2. Start the application using Docker Compose:

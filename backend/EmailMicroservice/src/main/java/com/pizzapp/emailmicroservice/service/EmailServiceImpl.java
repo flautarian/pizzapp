@@ -1,7 +1,6 @@
 package com.pizzapp.emailmicroservice.service;
 
 import com.pizzapp.base.dto.PizzaDto;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -131,7 +129,7 @@ public class EmailServiceImpl {
             helper.setFrom(username);
             helper.setTo(pizzaDto.getEmailAddress());
             helper.setSubject("Your pizza has arrived! 🏠");
-            helper.setText(htmlContent);
+            helper.setText(htmlContent, true);
 
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
             InputStreamSource imageSource = new ByteArrayResource(classloader.getResourceAsStream("static/images/logo.png").readAllBytes());

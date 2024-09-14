@@ -34,7 +34,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>${project.artifactId}-SHADED</finalName>
+              <finalName>emailMicroservice-jar-with-dependencies</finalName>
               <transformers>
                 <transformer>
                   <mainClass>com.pizzapp.emailmicroservice.EmailMicroserviceApplication</mainClass>
@@ -67,12 +67,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <artifactId>logback-classic</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>logback-core</artifactId>
-          <groupId>ch.qos.logback</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+          <groupId>org.springframework.boot</groupId>
         </exclusion>
         <exclusion>
           <artifactId>spring-boot-test</artifactId>
@@ -140,10 +136,6 @@
       <exclusions>
         <exclusion>
           <artifactId>logback-classic</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>logback-core</artifactId>
           <groupId>ch.qos.logback</groupId>
         </exclusion>
         <exclusion>

@@ -7,7 +7,7 @@ export class Utils {
             { name: 'Cheese', value: 'cheese', price: 0.5, quantity: 0 },
             { name: 'Pepperoni', value: 'pepperoni', price: 1.0, quantity: 0  },
             { name: 'Mushrooms', value: 'mushroom', price: 0.7, quantity: 0  },
-            { name: 'Onions', value: 'onions', price: 0.5, quantity: 0  },
+            { name: 'Onions', value: 'onion', price: 0.5, quantity: 0  },
             { name: 'Sausage', value: 'sausage', price: 1.2, quantity: 0  },
             { name: 'Bacon', value: 'bacon', price: 1.3, quantity: 0  },
             { name: 'Black Olives', value: 'blackolives', price: 0.8, quantity: 0  },

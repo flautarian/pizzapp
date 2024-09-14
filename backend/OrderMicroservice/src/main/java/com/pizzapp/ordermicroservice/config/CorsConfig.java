@@ -14,6 +14,7 @@ public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer() {
 
+        // This can't be a real project correct CORS, be careful
         return new WebMvcConfigurer() {
             // We override the CORS properties here to avoid CORS errors
             @Override

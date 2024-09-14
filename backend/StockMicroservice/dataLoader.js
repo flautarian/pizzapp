@@ -5,7 +5,7 @@ const addInitialStockData = async (redisClient) => {
         "cheese",
         "pepperoni",
         "mushroom",
-        "onions",
+        "onion",
         "sausage",
         "bacon",
         "blackolives",

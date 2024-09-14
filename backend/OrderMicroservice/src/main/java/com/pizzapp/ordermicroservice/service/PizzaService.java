@@ -1,6 +1,8 @@
 package com.pizzapp.ordermicroservice.service;
 
 import com.pizzapp.base.dto.PizzaDto;
+import com.pizzapp.base.exception.PizzaNotFoundException;
+import com.pizzapp.base.exception.StatusNotAllowedException;
 import com.pizzapp.base.model.Pizza;
 import com.pizzapp.ordermicroservice.repository.PizzaRepository;
 import org.slf4j.Logger;
@@ -8,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class PizzaService {
@@ -17,6 +22,14 @@ public class PizzaService {
 
     public PizzaService(PizzaRepository pizzaOrderRepository) {
         this.pizzaOrderRepository = pizzaOrderRepository;
+    }
+
+    private static final Set<String> AVAILABLE_STATES = new HashSet<>();
+
+    static {
+        AVAILABLE_STATES.add("PLACED");
+        AVAILABLE_STATES.add("DELIVERED");
+        AVAILABLE_STATES.add("DONE");
     }
 
     public Flux<PizzaDto> getAllOrders() {
@@ -34,7 +47,11 @@ public class PizzaService {
     }
 
     public Mono<PizzaDto> updateOrderStatus(String id, String status) {
+        if (!AVAILABLE_STATES.contains(status))
+            throw new StatusNotAllowedException(String.format("status %s not allowed, only PLACED, DELIVERED or DONE", status));
+
         return pizzaOrderRepository.findById(id)
+                .switchIfEmpty(Mono.error(new PizzaNotFoundException("Order not found with id: " + id)))
                 .flatMap(order -> {
                     order.setStatus(status);
                     return pizzaOrderRepository.save(order);

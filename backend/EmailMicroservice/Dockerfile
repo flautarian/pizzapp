@@ -17,7 +17,7 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy built Spring Boot JAR from previous stage
-COPY --from=spring-builder /app/backend/EmailMicroservice/target/emailmicroservice-SHADED.jar /app/emailMicroservice.jar
+COPY --from=spring-builder /app/backend/EmailMicroservice/target/emailMicroservice-jar-with-dependencies.jar /app/emailMicroservice.jar
 
 # Expose the port the app runs on
 EXPOSE 8080

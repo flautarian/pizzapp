@@ -17,6 +17,8 @@ import com.pizzapp.ordermicroservice.producer.PizzaOrderProducer;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.Objects;
+
 @Service
 public class ReactiveChangeStreamService {
 
@@ -48,9 +50,9 @@ public class ReactiveChangeStreamService {
     private void handleChange(ChangeStreamEvent<Document> event) {
         // Handle the change event here
         try{
-            System.out.println("Change detected: " + event.getBody());
+            logger.info(String.format("DB change detected by new Pizza order: %s", event.getBody()));
     
-            PizzaDto pizzaDto = new PizzaDto(event.getBody());
+            PizzaDto pizzaDto = new PizzaDto(Objects.requireNonNull(event.getBody()));
     
             // Send message to Email and Stock microservices
             PizzaOrderEvent pizzaOrderEvent = new PizzaOrderEvent();

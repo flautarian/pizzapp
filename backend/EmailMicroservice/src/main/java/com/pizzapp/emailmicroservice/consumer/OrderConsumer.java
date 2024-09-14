@@ -30,6 +30,7 @@ public class OrderConsumer {
             case "PLACED" -> emailService.notifyPizzaPlaced(event.getPizzaDto());
             case "DELIVERED" -> emailService.notifyPizzaDelivered(event.getPizzaDto());
             case "DONE" -> emailService.notifyPizzaDone(event.getPizzaDto());
+            default -> throw new IllegalStateException("Unexpected value: " + event.getPizzaDto().getStatus());
         }
     }
 }
