@@ -5,6 +5,7 @@ import { WebSocketService } from '@services/WebSocketService';
 import { environment } from 'environments/environment';
 import { IngredientDto } from 'models/IngerdientDto';
 import { Utils } from 'utils/utils';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class BackendComponent {
     constructor(
         private http: HttpClient,
         private webSocketService: WebSocketService,
-        private stockWebSocketService: StockWebSocketService) { }
+        private stockWebSocketService: StockWebSocketService,
+        private toastr: ToastrService) { }
 
     orders: any[] = [];
 
@@ -49,6 +51,8 @@ export class BackendComponent {
                 if (index !== -1) {
                     this.orders[index] = update;
                 } else {
+                    if(update.status === "PLACED")
+                        this.toastr.warning('', `A new order has been placed by ${update.customerName}`);
                     this.orders.push(update);
                 }
             }
@@ -62,7 +66,7 @@ export class BackendComponent {
         this.http.post<any>(`${environment.apiUrl}/order/orders/${id}`, newStatus)
             .subscribe(
                 data => {
-                    alert("Order status updated successfully!");
+                    this.toastr.success('Order status updated successfully!',"", {positionClass: 'toast-bottom-right'});
                 },
                 error => {
                     console.error('Error:', error);
@@ -76,7 +80,7 @@ export class BackendComponent {
             this.http.post<any>(`${environment.apiStockUrl}/stock/restock/${ingredient.value}`, {})
                 .subscribe(
                     data => {
-                        alert("Ingredient stock updated successfully!");
+                        this.toastr.success(`Added ${value} of ${value} to stock successfully!`, "", {positionClass: 'toast-bottom-right'});
                     },
                     error => {
                         console.error('Error:', error);

@@ -39,6 +39,10 @@
                 <transformer>
                   <mainClass>com.pizzapp.ordermicroservice.OrdermicroserviceApplication</mainClass>
                 </transformer>
+                <transformer />
+                <transformer>
+                  <resource>META-INF/spring.handlers</resource>
+                </transformer>
               </transformers>
             </configuration>
           </execution>
@@ -52,6 +56,8 @@
                 <exclude>META-INF/*.SF</exclude>
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
+                <exclude>META-INF/LICENSE</exclude>
+                <exclude>META-INF/NOTICE</exclude>
               </excludes>
             </filter>
           </filters>

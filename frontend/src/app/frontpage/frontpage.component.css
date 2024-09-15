@@ -111,7 +111,6 @@ h2 {
 .select-option:hover {
     background-color: #8fff79;
     border-color: #37c400;
-    box-shadow: #37c400;
 }
 
 .select-option:active {

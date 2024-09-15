@@ -8,6 +8,7 @@ import { CurrencyPipe } from '@angular/common';
 import { environment } from 'environments/environment';
 import { StockWebSocketService } from '@services/StockWebSocketService';
 import { IngredientDto } from 'models/IngerdientDto';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-frontpage',
@@ -37,7 +38,8 @@ export class FrontpageComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private http: HttpClient,
-        private stockWebSocketService: StockWebSocketService) {
+        private stockWebSocketService: StockWebSocketService,
+        private toastr: ToastrService) {
     }
 
     ngOnInit(): void {
@@ -74,16 +76,12 @@ export class FrontpageComponent implements OnInit {
         });
     }
 
-    /* 
-      Submit form:
-      Send to assigned function depending of request type
-    */
     submitForm = () => {
         if (this.form.valid) {
             const formData = { ...this.form.value };
             this.postRequestData(formData);
         } else
-            alert("Error detected in fields validation, please check the form and try again");
+            this.toastr.error("Error detected in fields validation, please check the form and try again");
     }
 
     selectOption = (key: string, value: string, cssSuffix: string) => {
@@ -124,7 +122,7 @@ export class FrontpageComponent implements OnInit {
         let ingredient = this.pizzaIngredients.find((ingredient: IngredientDto) => ingredient.value === value) || null;
 
         if (!!ingredient && ingredient.quantity < this.getNeededQuantity(value)) {
-            alert("Ingredient not available");
+            this.toastr.warning('Ingredient not available', `${value} is not available`);
             return;
         }
 
@@ -205,10 +203,11 @@ export class FrontpageComponent implements OnInit {
         this.http.post<any>(`${environment.apiUrl}/order/placeorder`, data)
             .subscribe(
                 data => {
-                    alert("Pizza placed successfully!");
+                    this.toastr.success('Pizza ordered', "Pizza placed successfully!");
                     window.location.href = '/frontpage';
                 },
                 error => {
+                    this.toastr.error('An error occurred', "Error occurred while placing the pizza, check console for more information");
                     console.error('Error:', error);
                     // Handle errors here
                 }
