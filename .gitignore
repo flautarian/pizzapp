@@ -16,6 +16,9 @@
 # Ignore Angular build output
 /frontend/dist/
 /frontend/.angular/
+/frontend/.vscode/
+.angular/cache
+
 
 # Ignore IntelliJ IDEA files
 .idea/
