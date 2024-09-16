@@ -6,13 +6,14 @@ With the aim of getting an entire fullstack project, with many technologies shar
 - For frontend part Angular 17 with Angular Universal and Angular Material.
 - For the database part I used MongoDB for Orders persistance and Redis for Stock persistance and management.
 
+<img src="https://github.com/user-attachments/assets/2117039f-17bd-4254-b83d-a73e512b64e7" width="800" style="display: block; margin: 0 auto;" />
+
 ## Table of Contents 📚
-- [Installation](#installation)
-- [Usage](#usage)
-- [Microservices Architecture](#microservices-architecture)
-- [Environment Variables](#environment-variables)
-- [Contributing](#contributing)
-- [License](#license)
+- [Installation](#installation-%EF%B8%8F)
+- [Usage](#usage-)
+- [Microservices Architecture](#microservices-architecture-)
+- [Contributing](#contributing-)
+- [License](#license-%EF%B8%8F)
 
 ## Installation ⚙️
 To run the project locally, make sure you have Docker and Docker Compose installed.
@@ -55,21 +56,7 @@ By only executing the command in point 2 the entire project will start to work, 
 
 - **Email Microservice (emailM)**:  
   Microsevice Listening to Kafka for order updates and sends email notifications to customers with templated emails.
-
-### Running Tests
-If you want to run unit tests, navigate to the corresponding service and use Maven or npm:
-
-For Java microservices:
-```bash
-cd orderM
-mvn test
-```
-
-For the Node.js service:
-```bash
-cd stockM
-npm test
-```
+  
 
 ## Microservices Architecture 👷
 
@@ -97,8 +84,8 @@ npm test
 6. **Stock-db & Mongo-db**:
    - Redis and MongoDB containers are used to store stock and orders data with opened ports in a shared network to able communication between the services and the database.
 
-## Contributing🎉
+## Contributing 🎉
 This project is well made only for interactive and self learning purposes, so if you wish to contribute, please fork the repository and submit a pull request. For major changes, open an issue to discuss what you would like to change.
 
-## License⚖️
+## License ⚖️
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
