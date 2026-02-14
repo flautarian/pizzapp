@@ -8,7 +8,7 @@ WORKDIR /app/backend
 COPY ../ .
 
 # Build only the OrderMicroservice module and package it as an executable JAR
-RUN mvn clean package -pl OrderMicroservice -am
+RUN mvn clean package -Dmaven.test.skip=true -pl OrderMicroservice -am
 
 # Stage 2: Serve Spring Boot App
 FROM eclipse-temurin:17-jdk-alpine

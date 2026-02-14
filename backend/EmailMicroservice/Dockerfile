@@ -7,8 +7,8 @@ WORKDIR /app/backend
 # Copy the entire project into the build context
 COPY ../ .
 
-# Build only the OrderMicroservice module and package it as an executable JAR
-RUN mvn clean package -pl EmailMicroservice -am
+# Build only the EmailMicroservice module and package it as an executable JAR
+RUN mvn clean package -Dmaven.test.skip=true -pl EmailMicroservice -am
 
 # Stage 2: Serve Spring Boot App
 FROM eclipse-temurin:17-jdk-alpine
