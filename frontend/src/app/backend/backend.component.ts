@@ -11,7 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
     selector: 'app-backend',
     templateUrl: './backend.component.html',
-    styleUrls: ['./backend.component.css']
+    styleUrls: ['./backend.component.css'],
+    standalone: false
 })
 export class BackendComponent {
     pizzaIngredients: any;

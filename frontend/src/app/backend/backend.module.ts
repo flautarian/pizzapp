@@ -12,7 +12,4 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([{ path: '', component: BackendComponent }])
   ]
 })
-export class BackendModule { 
-
-    
-}
+export class BackendModule {}

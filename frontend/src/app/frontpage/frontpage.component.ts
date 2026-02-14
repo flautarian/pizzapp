@@ -13,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
     selector: 'app-frontpage',
     templateUrl: './frontpage.component.html',
-    styleUrls: ['./frontpage.component.css']
+    styleUrls: ['./frontpage.component.css'],
+    standalone: false
 })
 export class FrontpageComponent implements OnInit {
     form!: FormGroup;
