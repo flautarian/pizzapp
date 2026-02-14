@@ -53,6 +53,7 @@ initialize_replica_set() {
   })'
 }
 
+
 if ! check_superuser_exists; then
   # Wait until the replica set is initialized
   if ! check_replica_set; then
